@@ -15,7 +15,7 @@ void insertProduct(Products *actualBuyCar,Products *productToInsert){
 		insertProduct(actualBuyCar->nextProduct,productToInsert);
 }
 
-void sortBysize(Products *product,int itemsInTheBuyCar){
+void sortBysize(Products *product){
 	char *tempName;
 	int tempSize = 0;
 	int tempProcessTime = 0;

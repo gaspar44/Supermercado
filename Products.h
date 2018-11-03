@@ -15,7 +15,7 @@ typedef struct Product{
 	struct Product *nextProduct;
 }Products;
 
-void sortBysize(Products *product,int itemsInTheBuyCar);
+void sortBysize(Products *product);
 void insertProduct(Products *actualBuyCar, Products *productToInsert);
 
 
