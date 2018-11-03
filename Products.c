@@ -4,8 +4,9 @@
  *  Created on: 28 oct. 2018
  *      Author: gaspar
  */
-#include "Products.h"
+#include <stdio.h>
 #include <stdlib.h>
+#include "Products.h"
 
 void insertProduct(Products *actualBuyCar,Products *productToInsert){
 	if (actualBuyCar->nextProduct == NULL)
@@ -26,7 +27,7 @@ void sortBysize(Products *product){
 
 		for (nextElement = actualElement->nextProduct; nextElement != NULL; nextElement = nextElement->nextProduct){
 
-			if (actualElement->size < nextElement -> size){
+			if (actualElement->size > nextElement -> size){
 				tempName = nextElement ->name;
 				tempSize = nextElement -> size;
 				tempProcessTime = nextElement -> processTime;
@@ -42,7 +43,17 @@ void sortBysize(Products *product){
 
 		}
 	}
-	free(actualElement);
-	free(nextElement);
+}
 
-};
+void mostrar(Products *lista){
+
+	if (lista->nextProduct == NULL) // En este caso está vacía
+		printf("%d\n",lista->size ); // Mostramos el valor
+
+	else {
+		Products *otro = (Products*) malloc(sizeof(Products));  // Creamos un nodo
+		otro = lista->nextProduct;  // Actualizamo la lista con el siguiente nodo
+		printf("%d\n",lista -> size); // Mostramos el valor actual
+		mostrar(otro); // Volvemos a llamar a la función
+	}
+}
