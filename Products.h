@@ -9,7 +9,7 @@
 #define PRODUCTS_H_
 
 typedef struct Product{
-	char *name;
+	char name[15];
 	int size;
 	int processTime;
 	struct Product *nextProduct;

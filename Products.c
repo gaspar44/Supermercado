@@ -4,8 +4,10 @@
  *  Created on: 28 oct. 2018
  *      Author: gaspar
  */
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "Products.h"
 
 void insertProduct(Products *actualBuyCar,Products *productToInsert){
@@ -17,7 +19,7 @@ void insertProduct(Products *actualBuyCar,Products *productToInsert){
 }
 
 void sortBysize(Products *product){
-	char *tempName;
+	char tempName[15];
 	int tempSize = 0;
 	int tempProcessTime = 0;
 	Products *actualElement = (Products*)malloc(sizeof(Products));
@@ -28,15 +30,15 @@ void sortBysize(Products *product){
 		for (nextElement = actualElement->nextProduct; nextElement != NULL; nextElement = nextElement->nextProduct){
 
 			if (actualElement->size > nextElement -> size){
-				tempName = nextElement ->name;
+				strcpy(tempName,nextElement ->name);
 				tempSize = nextElement -> size;
 				tempProcessTime = nextElement -> processTime;
 
-				nextElement -> name = actualElement -> name;
+				strcpy(nextElement -> name,actualElement -> name);
 				nextElement -> processTime = actualElement -> processTime;
 				nextElement -> size = actualElement -> size;
 
-				actualElement -> name = tempName;
+				strcpy(actualElement -> name,tempName);
 				actualElement -> size = tempSize;
 				actualElement -> processTime = tempProcessTime;
 			}
@@ -56,4 +58,49 @@ void mostrar(Products *lista){
 		printf("%d\n",lista -> size); // Mostramos el valor actual
 		mostrar(otro); // Volvemos a llamar a la función
 	}
+}
+
+Products* loadInventory(char * routeToFile){
+	FILE* file = fopen(routeToFile,"r");
+	if (file == NULL){
+		printf("hubo error\n");
+		exit(1);
+	}
+	int numberOfLines = 0;
+
+	while (!feof(file)){
+		if ( fgetc(file) == '\n')
+			numberOfLines = numberOfLines + 1;
+	}
+
+	fclose(file);
+	file = fopen(routeToFile,"r");
+	char* actualLine = NULL;
+	size_t lineSize = 0;
+	ssize_t charsInTheLine;
+	Products* inventory = (Products*) calloc(numberOfLines,sizeof(Products));
+	Products* inventoryToReturn = inventory;
+
+	char* readedName = 0;
+	char* readedSize = 0;
+	char* readedProcessTime = 0;
+
+	while ( getline(&actualLine,&lineSize,file) != -1 ){
+		Products product;
+		readedName = strtok(actualLine,"\t");
+		readedSize = strtok(NULL,"\t");
+		readedProcessTime = strtok(NULL,"\r\n");
+
+		strcpy(product.name,readedName);
+		product.size = atoi(readedSize);
+		product.processTime = atoi(readedProcessTime);
+
+		*inventory = product;
+		inventory++;
+
+	}
+
+	fclose(file);
+	return inventoryToReturn;
+
 }
