@@ -50,12 +50,12 @@ void sortBysize(Products *product){
 void mostrar(Products *lista){
 
 	if (lista->nextProduct == NULL) // En este caso está vacía
-		printf("%d\n",lista->size ); // Mostramos el valor
+		printf("%s\t%d\n",lista->name,lista->size ); // Mostramos el valor
 
 	else {
 		Products *otro = (Products*) malloc(sizeof(Products));  // Creamos un nodo
 		otro = lista->nextProduct;  // Actualizamo la lista con el siguiente nodo
-		printf("%d\n",lista -> size); // Mostramos el valor actual
+		printf("%s\t%d\n",lista->name,lista->size ); // Mostramos el valor actual
 		mostrar(otro); // Volvemos a llamar a la función
 	}
 }
@@ -101,6 +101,13 @@ Products* loadInventory(char * routeToFile){
 	}
 
 	fclose(file);
+	setDefaultNextProduct(inventoryToReturn,numberOfLines);
 	return inventoryToReturn;
 
+}
+
+void setDefaultNextProduct(Products *inventory,int numberOfProductsInStock) {
+	for (int i = 0 ; i < numberOfProductsInStock - 1; i++){
+		(inventory + i)-> nextProduct = NULL;
+	}
 }

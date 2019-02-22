@@ -18,6 +18,7 @@ typedef struct Product{
 void sortBysize(Products *product);
 void insertProduct(Products *actualBuyCar, Products *productToInsert);
 void mostrar(Products *lista);
+void setDefaultNextProduct(Products *inventory,int numberOfProductsInStock);
 Products* loadInventory(char * routeToFile);
 
 #endif /* PRODUCTS_H_ */
